@@ -1,0 +1,20 @@
+{
+  "name": "alberto/loja_brinquedo",
+  "authors": [
+    {
+      "name": "alberto",
+      "email": "moraes_101@hotmail.com"
+    }
+  ],
+  "require": {
+    "vlucas/phpdotenv": "^5.2"
+  },
+  "require-dev": {
+    "larapack/dd": "1.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  }
+}
