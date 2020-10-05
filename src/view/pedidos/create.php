@@ -86,9 +86,13 @@
                                                             <option disabled value="" selected> Selecione o Revendedor
                                                             </option>
                                                             <?php foreach ($revendedores as $revendedor): ?>
-                                                                <?php if (isset($this->session['usuario']->revend) and $this->session['usuario']->id == $revendedor->id):?>
-                                                                    <option <?= ($this->session['usuario']->id == $revendedor->id) ? 'selected' : ''?>
-                                                                             value="<?= $revendedor->id ?>"> <?= "{$revendedor->revendedor}" ?>
+                                                                <?php if (isset($this->session['usuario']->revend) and $this->session['usuario']->id == $revendedor->id): ?>
+                                                                    <option <?= ($this->session['usuario']->id == $revendedor->id) ? 'selected' : '' ?>
+                                                                            value="<?= $revendedor->id ?>"> <?= "{$revendedor->revendedor}" ?>
+                                                                    </option>
+                                                                <?php else: ?>
+                                                                    <option <?= (old('id_revendedor') == $revendedor->id) ? 'selected' : '' ?>
+                                                                            value="<?= $revendedor->id ?>"> <?= "{$revendedor->revendedor}" ?>
                                                                     </option>
                                                                 <?php endif; ?>
                                                             <?php endforeach; ?>
@@ -108,7 +112,7 @@
                                                         <label for="qtd">Valor do pedido</label>
                                                         <input type="text" name="valor_pedido"
                                                                class="form-control money disabled" readonly
-                                                               value="<?= formatCurrency(0) ?>">
+                                                               value="<?= old('valor_pedido') ?? formatCurrency(0) ?>">
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-12 repeater-default">
@@ -184,16 +188,16 @@
                                                         <option value="" selected> Selecione a Forma de Pagamento
                                                         </option>
                                                         <?php foreach ($formaPagamento as $tp_pagamento): ?>
-                                                            <option value="<?= $tp_pagamento->id ?>"> <?= $tp_pagamento->nome ?></option>
+                                                            <option  <?= old('id_tp_pagamento') == $tp_pagamento->id ? 'seleced': ''?> value="<?= $tp_pagamento->id ?>"> <?= $tp_pagamento->nome ?></option>
                                                         <?php endforeach; ?>
                                                     </select>
                                                 </div>
                                                 <div class="form-group" style="display: none" id="parcelas">
                                                     <label for="prod">Parcelas</label>
                                                     <select name="parcelas" class="form-control">
-                                                        <option value="1"> x1</option>
-                                                        <option value="2"> x2</option>
-                                                        <option value="3"> x3</option>
+                                                        <option <?= old('parcelas') == 1 ? 'seleced': ''?> value="1"> x1</option>
+                                                        <option <?= old('parcelas') == 2 ? 'seleced': ''?> value="2"> x2</option>
+                                                        <option <?= old('parcelas') == 3 ? 'seleced': ''?> value="3"> x3</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">

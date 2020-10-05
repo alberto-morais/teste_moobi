@@ -29,7 +29,7 @@ class Pedido extends Model
             return $this->db->table($this->table)->get();
         }
         $validUser = '';
-        if ($_SESSION['usuario']->revend){
+        if (isset($_SESSION['usuario']->revend)){
             $validUser = " where pedidos.id_revendedor = {$_SESSION['usuario']->id}";
         }
         $resp = $this->db->tablePage('pedidos')->select("pedidos.id,pedidos.status, pedidos.data,pedidos.valor_venda,pedidos.parcelas, r.revendedor,
