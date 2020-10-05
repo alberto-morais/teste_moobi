@@ -15,6 +15,12 @@ function formatCurrency($valor)
 
 }
 
+function old($name)
+{
+    if (!empty($_POST))  $post = $_POST;
+    return $something = isset($post[$name]) ? $post[$name] : NULL;
+}
+
 function parseCurrencyToFloat($valor)
 {
     if (is_float($valor)){
@@ -32,4 +38,11 @@ function parseCurrencyToFloat($valor)
     }
 
     return $valor;
+}
+
+function formarDateBr($date)
+{
+    setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+    date_default_timezone_set('America/Sao_Paulo');
+    return strftime('%d/%m/%Y %H:%M:%S', strtotime($date));
 }

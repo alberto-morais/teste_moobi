@@ -9,20 +9,35 @@ use App\controllers\PedidosController;
 use App\controllers\ProdutosController;
 use App\controllers\RevendedoresController;
 use App\controllers\UsuariosController;
+use App\models\Pedido;
 
 return [
+
+///////////////////////// ROUTAS DEFAULT  //////////////////////////////////
+
     [
         'name' => '/',
         'method' => 'GET',
         'controller' => HomeController::class,
         'action' => 'index'
     ],
+
+    [
+        'name' => 'painel',
+        'method' => 'GET',
+        'controller' => PainelController::class,
+        'action' => 'index'
+    ],
+
     [
         'name' => 'login/check',
         'method' => 'POST',
         'controller' => LoginController::class,
         'action' => 'check'
     ],
+
+//////////////////////////   Usuarios   /////////////////////////////////
+
     [
         'name' => 'usuarios',
         'method' => 'GET',
@@ -30,8 +45,14 @@ return [
         'action' => 'index'
     ],
     [
-        'name' => 'usuarios/logout',
-        'method' => 'POST',
+        'name' => 'usuarios/{id}',
+        'method' => 'GET',
+        'controller' => UsuariosController::class,
+        'action' => 'index'
+    ],
+    [
+        'name' => 'usuario/logout',
+        'method' => 'GET',
         'controller' => UsuariosController::class,
         'action' => 'logout'
     ],
@@ -42,19 +63,29 @@ return [
         'action' => 'create'
     ],
     [
-        'name' => 'usuario/editar',
+        'name' => 'usuario/editar/{id}',
         'method' => 'GET',
         'controller' => UsuariosController::class,
         'action' => 'edit'
     ],
     [
-        'name' => 'painel',
+        'name' => 'usuario/salvar',
         'method' => 'POST',
-        'controller' => PainelController::class,
+        'controller' => UsuariosController::class,
+        'action' => 'save'
+    ],
+
+/////////////////////////    Revendedor  //////////////////////////////
+
+
+    [
+        'name' => 'revendedores',
+        'method' => 'GET',
+        'controller' => RevendedoresController::class,
         'action' => 'index'
     ],
     [
-        'name' => 'revendedores',
+        'name' => 'revendedores/{id}',
         'method' => 'GET',
         'controller' => RevendedoresController::class,
         'action' => 'index'
@@ -66,13 +97,28 @@ return [
         'action' => 'create'
     ],
     [
-        'name' => 'revendedor/editar',
+        'name' => 'revendedor/salvar',
+        'method' => 'POST',
+        'controller' => RevendedoresController::class,
+        'action' => 'save'
+    ],
+    [
+        'name' => 'revendedor/editar/{id}',
         'method' => 'GET',
         'controller' => RevendedoresController::class,
         'action' => 'edit'
     ],
+
+//////////////////////// Pedidos / //////////////////////////////
+
     [
         'name' => 'pedidos',
+        'method' => 'GET',
+        'controller' => PedidosController::class,
+        'action' => 'index'
+    ],
+    [
+        'name' => 'pedidos/{id}',
         'method' => 'GET',
         'controller' => PedidosController::class,
         'action' => 'index'
@@ -84,13 +130,29 @@ return [
         'action' => 'create'
     ],
     [
-        'name' => 'pedido/editar',
+        'name' => 'pedido/editar{id}',
         'method' => 'GET',
         'controller' => PedidosController::class,
         'action' => 'edit'
     ],
+
+    [
+        'name' => 'pedido/salvar',
+        'method' => 'POST',
+        'controller' => PedidosController::class,
+        'action' => 'save'
+    ],
+
+    //////////////////////// Produtos ///////////////////////////////
+
     [
         'name' => 'produtos',
+        'method' => 'GET',
+        'controller' => ProdutosController::class,
+        'action' => 'index'
+    ],
+    [
+        'name' => 'produtos/{id}',
         'method' => 'GET',
         'controller' => ProdutosController::class,
         'action' => 'index'
@@ -108,7 +170,7 @@ return [
         'action' => 'save'
     ],
     [
-        'name' => 'produto/editar',
+        'name' => 'produto/editar/{id}',
         'method' => 'GET',
         'controller' => ProdutosController::class,
         'action' => 'edit'

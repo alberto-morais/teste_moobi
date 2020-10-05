@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 use App\core\Application;
 use App\core\View;
 
@@ -12,6 +13,7 @@ if (file_exists(__DIR__ . '/../.env')) {
 
 require_once __DIR__ . '/../src/core/Funtions.php';
 require_once __DIR__ . '/../src/helpers/functions.php';
+require_once __DIR__ . '/../src/helpers/Message.php';
 
 require_once __DIR__ . '/../src/core/Application.php';
 
@@ -28,12 +30,33 @@ if (empty($uri)) {
 
 
 $flag = false;
+$patch = (filter_input(INPUT_GET, "route", FILTER_DEFAULT) ?? "/");
 foreach ($routes as $route) {
-    if ($route['name'] == $uri and $route['method'] == $httpMethod) {
+    preg_match_all("~\{\s* ([a-zA-Z_][a-zA-Z0-9_-]*) \}~x", $route['name'], $keys, PREG_SET_ORDER);
+    $routeDiff = array_values(array_diff(explode("/", $uri), explode("/", $route['name'])));
+
+    $data = [];
+    foreach ($keys as $key) {
+        $data[$key[1]] = $routeDiff[0] ?? null;
+        $route['name'] = str_replace("{{$key[1]}}",'', $route['name']);
+    }
+
+    if (($route['name'] == $uri and $route['method'] == $httpMethod) ||
+        (isset($key[1]) && isset($data[$key[1]]) && $route['name'] .  $data[$key[1]] == $uri and $route['method'] == $httpMethod)) {
         $controller = new $route['controller'];
-        $controller->{$route['action']}();
+        if (isset($keys[0]) && !empty($data[$key[1]])) {
+            $controller->{$route['action']}($data[$key[1]]);
+        } elseif ($route['name'] == $uri) {
+            $controller->{$route['action']}();
+        }
         $flag = true;
     }
+}
+
+function process(string $route, array $arguments, array $params = null): string
+{
+    $params = (!empty($params) ? "?" . http_build_query($params) : null);
+    return str_replace(array_keys($arguments), array_values($arguments), $route) . "{$params}";
 }
 
 if (!$flag) {
@@ -43,7 +66,7 @@ if (!$flag) {
 }
 
 
-if (isset($_SESSION['init']) && $_SESSION['init'] === 0){
+if (isset($_SESSION['init']) && $_SESSION['init'] === 0) {
     unset($_SESSION['flash']);
 }
 

@@ -22,3 +22,7 @@
 table.table.align-items-center.table-flush {
     min-height: 140px;
 }
+
+.form-control, .form-control:focus{
+    color: #565656;
+}

@@ -10,7 +10,7 @@
                                     <img alt="Image placeholder" src="./assets/img/theme/team-4.jpg">
                                   </span>
                             <div class="media-body  ml-2  d-none d-lg-block">
-                                <span class="mb-0 text-sm  font-weight-bold"><?= $this->session['usuario']['nome'] ?></span>
+                                <span class="mb-0 text-sm  font-weight-bold"><?= $this->session['usuario']->nome ?></span>
                             </div>
                         </div>
                     </a>
@@ -23,7 +23,7 @@
                             <span>Perfil</span>
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a href="<?= base_url('usuarios/logout') ?>" class="dropdown-item">
+                        <a href="<?= base_url('usuario/logout') ?>" class="dropdown-item">
                             <i class="ni ni-user-run"></i>
                             <span>Logout</span>
                         </a>

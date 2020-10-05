@@ -15,11 +15,9 @@ class Login extends Model
         $email = $_POST['email'];
         $senha = md5($_POST['senha'].getenv('PASS'));
         $resp = $this->db->table('usuarios')
-            ->select()
             ->where('email', $email)
             ->where('senha', $senha)
-            ->one();
-
+            ->get()->first();
         if ($resp){
             return $resp;
         }

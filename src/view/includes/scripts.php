@@ -1,4 +1,6 @@
 <script src="./assets/vendor/jquery/dist/jquery.min.js"></script>
+<script src="./assets/js/repeater.js"></script>
+<script src="./assets/js/select2.js?v=1.2.0"></script>
 <script src="./assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="./public/assets/js/maskMoney.min.js"></script>
 <script src="./public/assets/js/jquery.mask.min.js"></script>

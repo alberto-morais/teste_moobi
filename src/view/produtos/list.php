@@ -8,11 +8,11 @@
 <?php require_once(__DIR__.'/../includes/menu.php') ;?>
 <!-- Main content -->
 <div class="main-content" id="panel">
-    <?php if (isset($this->session['flash']['alert']) && !empty($this->session['flash'])): ?>
-        <?php foreach ($this->session['flash']['alert'] as $alert): ?>
+    <?php if (isset($this->session['flash']['notify']) && !empty($this->session['flash'])): ?>
+        <?php foreach ($this->session['flash']['notify'] as $alert): ?>
             <div class="alert alert-<?= $alert['type'] ?> alert-dismissible fade show" role="alert">
                 <span class="alert-icon"><i class="ni ni-like-2"></i></span>
-                <span class="alert-text"><?= $alert['message'] ?></span>
+                <span class="alert-text"><?= $alert['title'] ?></span>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -98,7 +98,7 @@
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                                                     <a class="dropdown-item"
-                                                       href="<?= base_url("produto/edit/{$produto->id}") ?>">Editar</a>
+                                                       href="<?= base_url("produto/editar/{$produto->id}") ?>">Editar</a>
                                                     <?php if ($produto->ativo):?>
                                                     <a class="dropdown-item"
                                                        href="<?= base_url("produto/active/{$produto->id}") ?>">Atiavar</a>
@@ -126,29 +126,7 @@
                     </div>
                     <!-- Card footer -->
                     <div class="card-footer py-4">
-                        <nav aria-label="...">
-                            <ul class="pagination justify-content-end mb-0">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1">
-                                        <i class="fas fa-angle-left"></i>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                </li>
-                                <li class="page-item active">
-                                    <a class="page-link" href="#">1</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">
-                                        <i class="fas fa-angle-right"></i>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
+                        <?php require_once(__DIR__ . '/../includes/paginate.php'); ?>
                     </div>
                 </div>
             </div>

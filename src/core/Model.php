@@ -6,9 +6,13 @@ use App\core\DB_Query_Build;
 
 class Model
 {
-    public $db;
+    protected $db;
+
+    static protected $method_save;
 
     static protected $error;
+
+    private $paginate;
 
     protected $table;
 
@@ -17,9 +21,21 @@ class Model
         $this->db =  DB_Query_Build::getInstance();
     }
 
-    public function all()
+    public function all($page,$limit)
     {
-       return $this->db->table($this->table)->get();
+       $resp = $this->db->table($this->table)->paginate($page, $limit);
+       $this->paginate = $this->db->paginationInfo();
+       return $resp;
+    }
+
+    public function getPaginate()
+    {
+        return $this->paginate;
+    }
+
+    public function  paginationInfo()
+    {
+        $this->db->paginationInfo();
     }
 
     public function findOne($id = '', $where = null, $order = array(), $limit = '', $offset = null)
@@ -53,6 +69,14 @@ class Model
         return false;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getTable()
+    {
+        return $this->table;
+    }
+
 
     private function set($array)
     {
@@ -65,6 +89,7 @@ class Model
 
     protected function insert($data)
     {
+        self::setMethodSave('insert');
         $lastID = $this->db->insert($this->table, $data);
         if(!is_array($lastID)){
             return $this->findOne($lastID);
@@ -87,20 +112,46 @@ class Model
 
     protected function update($data)
     {
-        $where = ['id' => $data->id];
+        self::setMethodSave('update');
+        $where = $data['id'];
         if($this->db->update($this->table, $data, $where)){
-            return $this->findOne($data->id);
+            return $this->findOne($data['id']);
         }
         return false;
     }
 
+    /**
+     * @return mixed
+     */
+    public static function getMethodSave()
+    {
+        return self::$method_save;
+    }
+
+    /**
+     * @param mixed $method_save
+     */
+    public static function setMethodSave($method_save): void
+    {
+        self::$method_save = $method_save;
+    }
+
     protected function save($data = false)
     {
-        if (isset($data->id) and (!empty($data->id)) and (!$data == false)) {
+        $data = $this->clear($data);
+        if($data != false) $data = (array)$data;
+        if (isset($data['id']) and (!empty($data['id'])) and (!$data == false)) {
             return self::update($data);
         } else {
             if (isset($data->id) && $data->id === NULL) unset($data->id);
             return self::insert($data);
         }
     }
+
+    private function clear($data)
+    {
+        unset($data['db'], $data['table']);
+        return $data;
+    }
+
 }

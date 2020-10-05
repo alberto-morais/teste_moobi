@@ -8,11 +8,11 @@
 <?php require_once(__DIR__.'/../includes/menu.php') ;?>
 <!-- Main content -->
 <div class="main-content" id="panel">
-    <?php if (isset($this->session['flash']['alert']) && !empty($this->session['flash'])): ?>
-        <?php foreach ($this->session['flash']['alert'] as $alert): ?>
+    <?php if (isset($this->session['flash']['notify']) && !empty($this->session['flash'])): ?>
+        <?php foreach ($this->session['flash']['notify'] as $alert): ?>
             <div class="alert alert-<?= $alert['type'] ?> alert-dismissible fade show" role="alert">
                 <span class="alert-icon"><i class="ni ni-like-2"></i></span>
-                <span class="alert-text"><?= $alert['message'] ?></span>
+                <span class="alert-text"><?= $alert['title'] ?></span>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -57,38 +57,39 @@
                         <table class="table align-items-center table-flush">
                             <thead class="thead-light">
                             <tr>
-                                <th scope="col" class="sort" data-sort="name">Nome</th>
-                                <th scope="col" class="sort" data-sort="status">Preço</th>
-                                <th scope="col" class="sort" data-sort="budget">Data</th>
+                                <th scope="col" class="sort" data-sort="name">Cod</th>
+                                <th scope="col" class="sort" data-sort="name">Revendedor</th>
+                                <th scope="col" class="sort" data-sort="name">Data</th>
+                                <th scope="col" class="sort" data-sort="status">Tipo de Pagamento</th>
+                                <th scope="col" class="sort" data-sort="budget">Parcelas</th>
                                 <th scope="col" class="sort" data-sort="budget">status</th>
                                 <th scope="col" class="text-right">Ações</th>
                             </tr>
                             </thead>
                             <tbody class="list">
-                            <?php if (!empty($produtos)): ?>
-                                <?php foreach ($produtos as $produto)  : ?>
+                            <?php if (!empty($pedidos)): ?>
+                                <?php foreach ($pedidos as $pedido)  : ?>
                                     <tr>
-                                        <th scope="row">
-                                            <div class="media align-items-center">
-                                                <a href="#" class="avatar rounded-circle mr-3">
-                                                    <img alt="Image placeholder" src="./assets/img/theme/bootstrap.jpg">
-                                                </a>
-                                                <div class="media-body">
-                                                    <span class="name mb-0 text-sm">Argon Design System</span>
-                                                </div>
-                                            </div>
-                                        </th>
+
                                         <td class="budget">
-                                            $2500 USD
+                                            <?= $pedido->id ;?>
                                         </td>
-                                        <td>
-                                            <?= date('d-m-Y') ?>
+                                        <td class="budget">
+                                            <?= $pedido->revendedor ;?>
                                         </td>
-                                        <td>
-                                  <span class="badge badge-dot mr-4">
-                                    <i class="bg-warning"></i>
-                                    <span class="status">pending</span>
-                                  </span>
+                                        <td class="budget">
+                                            <?= formarDateBr($pedido->data) ;?>
+                                        </td>
+                                        <td class="budget">
+                                            <?= $pedido->nome ;?>
+                                        </td>
+                                        <td class="budget">
+                                            <?= $pedido->parcelas ;?>
+                                        </td>
+                                        <td class="budget">
+                                            <?= ($pedido->status == 1) ? 'Venda Realizada' :'' ;?>
+                                            <?= ($pedido->status == 2) ? 'Pendente' :'' ;?>
+                                            <?= ($pedido->status == 3) ? 'Finalizada' :'' ;?>
                                         </td>
                                         <td class="text-right">
                                             <div class="dropdown">
@@ -98,13 +99,8 @@
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                                                     <a class="dropdown-item"
-                                                       href="<?= base_url("produtos/edit/{$produto->id}") ?>">Editar</a>
-                                                    <a class="dropdown-item"
-                                                       href="<?= base_url("produtos/active/{$produto->id}") ?>">Atiavar</a>
-                                                    <a class="dropdown-item"
-                                                       href="<?= base_url("produtos/desactive/{$produto->id}") ?>">Desativar</a>
-                                                    <a class="dropdown-item"
-                                                       href="<?= base_url("produtos/delete/{$produto->id}") ?>">Remover</a>
+                                                       href="<?= base_url("pedido/visualizar/{$pedido->id}") ?>">Visualizar Itens
+                                                    </a>
                                                 </div>
                                             </div>
                                         </td>
@@ -122,29 +118,7 @@
                     </div>
                     <!-- Card footer -->
                     <div class="card-footer py-4">
-                        <nav aria-label="...">
-                            <ul class="pagination justify-content-end mb-0">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1">
-                                        <i class="fas fa-angle-left"></i>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                </li>
-                                <li class="page-item active">
-                                    <a class="page-link" href="#">1</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">
-                                        <i class="fas fa-angle-right"></i>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
+                        <?php require_once(__DIR__ . '/../includes/paginate.php'); ?>
                     </div>
                 </div>
             </div>

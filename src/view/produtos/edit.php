@@ -8,11 +8,11 @@
 <?php require_once(__DIR__.'/../includes/menu.php') ;?>
 <!-- Main content -->
 <div class="main-content" id="panel">
-    <?php if (isset($this->session['flash']['alert']) && !empty($this->session['flash'])): ?>
-        <?php foreach ($this->session['flash']['alert'] as $alert): ?>
+    <?php if (isset($this->session['flash']['notify']) && !empty($this->session['flash'])): ?>
+        <?php foreach ($this->session['flash']['notify'] as $alert): ?>
             <div class="alert alert-<?= $alert['type'] ?> alert-dismissible fade show" role="alert">
                 <span class="alert-icon"><i class="ni ni-like-2"></i></span>
-                <span class="alert-text"><?= $alert['message'] ?></span>
+                <span class="alert-text"><?= $alert['title'] ?></span>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -21,11 +21,11 @@
     <?php endif; ?>
 <!-- Main content -->
 <div class="main-content" id="panel">
-    <?php if (isset($this->session['flash']['alert']) && !empty($this->session['flash'])): ?>
-        <?php foreach ($this->session['flash']['alert'] as $alert): ?>
+    <?php if (isset($this->session['flash']['notify']) && !empty($this->session['flash'])): ?>
+        <?php foreach ($this->session['flash']['notify'] as $alert): ?>
             <div class="alert alert-<?= $alert['type'] ?> alert-dismissible fade show" role="alert">
                 <span class="alert-icon"><i class="ni ni-like-2"></i></span>
-                <span class="alert-text"><?= $alert['message'] ?></span>
+                <span class="alert-text"><?= $alert['title'] ?></span>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -71,7 +71,8 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form>
+                        <form action="<?=base_url('produto/salvar')?>" method="POST">
+                            <input type="hidden" name="id" value="<?= $produto->id ?>">
                             <h6 class="heading-small text-muted mb-4">Informações do Produtos</h6>
                             <div class="pl-lg-4">
                                 <div class="row">
@@ -80,14 +81,28 @@
                                             <label class="form-control-label" for="input-username">Nome do
                                                 Produto</label>
                                             <input type="text" id="input-nome" class="form-control" name="nome"
-                                                   placeholder="Carro com controler remoto" value="">
+                                                   placeholder="Carro com controler remoto" value="<?= $produto->nome ?>">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="form-control-label" for="input-email">Preço</label>
-                                            <input type="text" id="input-preço" name="preco" class="form-control money"
-                                                       placeholder="R$ 10,00">
+                                            <input type="text"  name="preco" class="form-control money"
+                                                       placeholder="R$100,00" value="<?= formatCurrency($produto->preco) ?>">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="input-email">Quantidade Atual</label>
+                                            <input type="number" id="input-preço" name="quantidade" class="form-control disabled" readonly
+                                                       placeholder="10" value="<?= ($produto->quantidade == '') ?  0 : $produto->quantidade?>">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="input-email">Adicionar</label>
+                                            <input type="number" id="input-preço" name="adicionar" class="form-control"
+                                                   placeholder="10" value="">
                                         </div>
                                     </div>
                                 </div>
@@ -95,32 +110,31 @@
                             <hr class="my-4"/>
                             <!-- Address -->
                             <h6 class="heading-small text-muted mb-4">Campos Personalizados</h6>
-                            <div class="pl-lg-4">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="input-username">Nome do
-                                                Produto</label>
-                                            <input type="text" id="input-nome" class="form-control" name="nome"
-                                                   placeholder="Carro com controler remoto" value="">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="input-email">Preço</label>
-                                            <input type="email" id="input-preço" name="preco" class="form-control"
-                                                   placeholder="R$ 10,00">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+<!--                            <div class="pl-lg-4">-->
+<!--                                <div class="row">-->
+<!--                                    <div class="col-lg-6">-->
+<!--                                        <div class="form-group">-->
+<!--                                            <label class="form-control-label" for="input-username">Nome do-->
+<!--                                                Produto</label>-->
+<!--                                            <input type="text" id="input-nome" class="form-control" name="nome"-->
+<!--                                                   placeholder="Carro com controler remoto" value="">-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-lg-6">-->
+<!--                                        <div class="form-group">-->
+<!--                                            <label class="form-control-label" for="input-email">Preço</label>-->
+<!--                                            <input type="email" id="input-preço" name="preco" class="form-control"-->
+<!--                                                   placeholder="R$ 10,00">-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
                             <hr class="my-4"/>
                             <!-- Description -->
                             <h6 class="heading-small text-muted mb-4">Descrição</h6>
                             <div class="pl-lg-4">
                                 <div class="form-group">
-                                    <textarea rows="4" class="form-control" name="descricao" placeholder="Descrição">
-                                    </textarea>
+                                    <textarea rows="4" class="form-control" name="descricao" placeholder="Descrição"><?= $produto->descricao ?></textarea>
                                 </div>
                             </div>
                             <div class="row">

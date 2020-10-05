@@ -8,11 +8,11 @@
 <?php require_once(__DIR__.'/../includes/menu.php') ;?>
 <!-- Main content -->
 <div class="main-content" id="panel">
-    <?php if (isset($this->session['flash']['alert']) && !empty($this->session['flash'])): ?>
-        <?php foreach ($this->session['flash']['alert'] as $alert): ?>
+    <?php if (isset($this->session['flash']['notify']) && !empty($this->session['flash'])): ?>
+        <?php foreach ($this->session['flash']['notify'] as $alert): ?>
             <div class="alert alert-<?= $alert['type'] ?> alert-dismissible fade show" role="alert">
                 <span class="alert-icon"><i class="ni ni-like-2"></i></span>
-                <span class="alert-text"><?= $alert['message'] ?></span>
+                <span class="alert-text"><?= $alert['title'] ?></span>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -21,11 +21,11 @@
     <?php endif; ?>
     <!-- Main content -->
     <div class="main-content" id="panel">
-        <?php if (isset($this->session['flash']['alert']) && !empty($this->session['flash'])): ?>
-            <?php foreach ($this->session['flash']['alert'] as $alert): ?>
+        <?php if (isset($this->session['flash']['notify']) && !empty($this->session['flash'])): ?>
+            <?php foreach ($this->session['flash']['notify'] as $alert): ?>
                 <div class="alert alert-<?= $alert['type'] ?> alert-dismissible fade show" role="alert">
                     <span class="alert-icon"><i class="ni ni-like-2"></i></span>
-                    <span class="alert-text"><?= $alert['message'] ?></span>
+                    <span class="alert-text"><?= $alert['title'] ?></span>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -71,23 +71,28 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <form>
+                            <form action="<?=base_url('usuario/salvar')?>" method="POST">
                                 <h6 class="heading-small text-muted mb-4">Informações do Usuários</h6>
                                 <div class="pl-lg-4">
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label class="form-control-label" for="input-username">Nome do
-                                                    Produto</label>
+                                                <label class="form-control-label" for="input-username">Nome do colaborador</label>
                                                 <input type="text" id="input-nome" class="form-control" name="nome"
-                                                       placeholder="Carro com controler remoto" value="">
+                                                       placeholder="Carro com controler remoto" value="<?= old('nome')?>">
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label class="form-control-label" for="input-email">Preço</label>
-                                                <input type="text" id="input-preço" name="preco" class="form-control money"
-                                                       placeholder="R$ 10,00">
+                                                <label class="form-control-label" for="input-email">Email</label>
+                                                <input type="text" name="email" class="form-control"
+                                                       placeholder="resvendndor@teste.com" value="<?= old('email')?>">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-control-label" for="input-email">Senha</label>
+                                                <input type="password" name="senha" class="form-control" value="">
                                             </div>
                                         </div>
                                     </div>

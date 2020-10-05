@@ -8,11 +8,11 @@
 <?php require_once(__DIR__.'/../includes/menu.php') ;?>
 <!-- Main content -->
 <div class="main-content" id="panel">
-    <?php if (isset($this->session['flash']['alert']) && !empty($this->session['flash'])): ?>
-        <?php foreach ($this->session['flash']['alert'] as $alert): ?>
+    <?php if (isset($this->session['flash']['notify']) && !empty($this->session['flash'])): ?>
+        <?php foreach ($this->session['flash']['notify'] as $alert): ?>
             <div class="alert alert-<?= $alert['type'] ?> alert-dismissible fade show" role="alert">
                 <span class="alert-icon"><i class="ni ni-like-2"></i></span>
-                <span class="alert-text"><?= $alert['message'] ?></span>
+                <span class="alert-text"><?= $alert['title'] ?></span>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -21,11 +21,11 @@
     <?php endif; ?>
     <!-- Main content -->
     <div class="main-content" id="panel">
-        <?php if (isset($this->session['flash']['alert']) && !empty($this->session['flash'])): ?>
-            <?php foreach ($this->session['flash']['alert'] as $alert): ?>
+        <?php if (isset($this->session['flash']['notify']) && !empty($this->session['flash'])): ?>
+            <?php foreach ($this->session['flash']['notify'] as $alert): ?>
                 <div class="alert alert-<?= $alert['type'] ?> alert-dismissible fade show" role="alert">
                     <span class="alert-icon"><i class="ni ni-like-2"></i></span>
-                    <span class="alert-text"><?= $alert['message'] ?></span>
+                    <span class="alert-text"><?= $alert['title'] ?></span>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -80,14 +80,21 @@
                                                 <label class="form-control-label" for="input-username">Nome do
                                                     Produto</label>
                                                 <input type="text" id="input-nome" class="form-control" name="nome"
-                                                       placeholder="Carro com controler remoto" value="">
+                                                       placeholder="Carro com controler remoto" value="<?= old('nome')?>">
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="form-control-label" for="input-email">Preço</label>
                                                 <input type="text" id="input-preço" name="preco" class="form-control money"
-                                                       placeholder="R$ 10,00">
+                                                       placeholder="R$ 10,00" value="<?= old('preco')?>">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-control-label" for="input-email">Quantidade</label>
+                                                <input type="number" id="input-preço" name="quantidade" class="form-control"
+                                                       placeholder="10" value="<?= old('quantidade')?>">
                                             </div>
                                         </div>
                                     </div>

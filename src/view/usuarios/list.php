@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
 
-<?php require_once(__DIR__.'/../includes/head.php') ;?>
+<?php require_once(__DIR__ . '/../includes/head.php'); ?>
 
 <body>
 <!-- Sidenav -->
-<?php require_once(__DIR__.'/../includes/menu.php') ;?>
+<?php require_once(__DIR__ . '/../includes/menu.php'); ?>
 <!-- Main content -->
 <div class="main-content" id="panel">
-    <?php if (isset($this->session['flash']['alert']) && !empty($this->session['flash'])): ?>
-        <?php foreach ($this->session['flash']['alert'] as $alert): ?>
+    <?php if (isset($this->session['flash']['notify']) && !empty($this->session['flash'])): ?>
+        <?php foreach ($this->session['flash']['notify'] as $alert): ?>
             <div class="alert alert-<?= $alert['type'] ?> alert-dismissible fade show" role="alert">
                 <span class="alert-icon"><i class="ni ni-like-2"></i></span>
-                <span class="alert-text"><?= $alert['message'] ?></span>
+                <span class="alert-text"><?= $alert['title'] ?></span>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -20,7 +20,7 @@
         <?php endforeach; ?>
     <?php endif; ?>
     <!-- Topnav -->
-    <?php require_once(__DIR__.'/../includes/nav_bar_user.php') ;?>
+    <?php require_once(__DIR__ . '/../includes/nav_bar_user.php'); ?>
     <!-- Header -->
     <div class="header bg-primary pb-6">
         <div class="container-fluid">
@@ -31,7 +31,7 @@
                         <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                                 <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
-                                <li class="breadcrumb-item"><a href="<?= base_url()?>">Dashboards</a></li>
+                                <li class="breadcrumb-item"><a href="<?= base_url() ?>">Dashboards</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Usuários</li>
                             </ol>
                         </nav>
@@ -58,37 +58,26 @@
                             <thead class="thead-light">
                             <tr>
                                 <th scope="col" class="sort" data-sort="name">Nome</th>
-                                <th scope="col" class="sort" data-sort="status">Preço</th>
-                                <th scope="col" class="sort" data-sort="budget">Data</th>
+                                <th scope="col" class="sort" data-sort="status">Email</th>
                                 <th scope="col" class="sort" data-sort="budget">status</th>
                                 <th scope="col" class="text-right">Ações</th>
                             </tr>
                             </thead>
                             <tbody class="list">
-                            <?php if (!empty($produtos)): ?>
-                                <?php foreach ($produtos as $produto)  : ?>
+                            <?php if (!empty($usuarios)): ?>
+                                <?php foreach ($usuarios as $usuario)  : ?>
                                     <tr>
-                                        <th scope="row">
-                                            <div class="media align-items-center">
-                                                <a href="#" class="avatar rounded-circle mr-3">
-                                                    <img alt="Image placeholder" src="./assets/img/theme/bootstrap.jpg">
-                                                </a>
-                                                <div class="media-body">
-                                                    <span class="name mb-0 text-sm">Argon Design System</span>
-                                                </div>
-                                            </div>
-                                        </th>
                                         <td class="budget">
-                                            $2500 USD
+                                            <?= $usuario->nome ?>
                                         </td>
                                         <td>
-                                            <?= date('d-m-Y') ?>
+                                            <?= $usuario->email ?>
                                         </td>
                                         <td>
-                                  <span class="badge badge-dot mr-4">
-                                    <i class="bg-warning"></i>
-                                    <span class="status">pending</span>
-                                  </span>
+                                          <span class="badge badge-dot mr-4">
+                                            <i class="bg-warning"></i>
+                                            <span class="status"><?= ($usuario->ativo == true) ? 'Ativo' : 'Desativado'; ?></span>
+                                          </span>
                                         </td>
                                         <td class="text-right">
                                             <div class="dropdown">
@@ -97,14 +86,22 @@
                                                     <i class="fas fa-ellipsis-v"></i>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                                    <?php if ($usuario->id == 1): ?>
+                                                        <a class="dropdown-item" href="javascript:;">Não é possível
+                                                            editar esse usuário</a>
+                                                        <?php continue; endif; ?>
                                                     <a class="dropdown-item"
-                                                       href="<?= base_url("produtos/edit/{$produto->id}") ?>">Editar</a>
+                                                       href="<?= base_url("usuario/editar/{$usuario->id}") ?>">Editar</a>
+                                                    <?php if ($usuario->ativo): ?>
+                                                        <a class="dropdown-item"
+                                                           href="<?= base_url("usuario/active/{$usuario->id}") ?>">Atiavar</a>
+                                                    <?php else : ?>
+                                                        <a class="dropdown-item"
+                                                           href="<?= base_url("usuario/desactive/{$usuario->id}") ?>">Desativar</a>
+                                                    <?php endif; ?>
                                                     <a class="dropdown-item"
-                                                       href="<?= base_url("produtos/active/{$produto->id}") ?>">Atiavar</a>
-                                                    <a class="dropdown-item"
-                                                       href="<?= base_url("produtos/desactive/{$produto->id}") ?>">Desativar</a>
-                                                    <a class="dropdown-item"
-                                                       href="<?= base_url("produtos/delete/{$produto->id}") ?>">Remover</a>
+                                                       href="<?= base_url("usuario/delete/{$usuario->id}") ?>">Remover
+                                                    </a>
                                                 </div>
                                             </div>
                                         </td>
@@ -122,38 +119,16 @@
                     </div>
                     <!-- Card footer -->
                     <div class="card-footer py-4">
-                        <nav aria-label="...">
-                            <ul class="pagination justify-content-end mb-0">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1">
-                                        <i class="fas fa-angle-left"></i>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                </li>
-                                <li class="page-item active">
-                                    <a class="page-link" href="#">1</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">
-                                        <i class="fas fa-angle-right"></i>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
+                        <?php require_once(__DIR__ . '/../includes/paginate.php'); ?>
                     </div>
                 </div>
             </div>
         </div>
 
-        <?php require_once(__DIR__.'/../includes/footer.php') ;?>
+        <?php require_once(__DIR__ . '/../includes/footer.php'); ?>
     </div>
 </div>
-<?php require_once(__DIR__.'/../includes/scripts.php') ;?>
+<?php require_once(__DIR__ . '/../includes/scripts.php'); ?>
 </body>
 
 </html>

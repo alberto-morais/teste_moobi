@@ -68,7 +68,7 @@ class DB_Query_Build
                 $stmt->execute($this->bindValues);
                 $this->rowCount = $stmt->rowCount();
 
-                $rows = $stmt->fetchAll(\PDO::FETCH_CLASS, 'MareiObj');
+                $rows = $stmt->fetchAll(\PDO::FETCH_CLASS, MareiObj::class);
                 $collection = [];
                 $collection = new MareiCollection();
                 $x = 0;
@@ -266,6 +266,11 @@ class DB_Query_Build
             $this->getSQL = $this->sql;
             $stmt = $this->dbh->prepare($this->sql);
             $stmt->execute($this->bindValues);
+
+            if (!empty($stmt->errorInfo())){
+                return $stmt->errorInfo();
+            }
+
             return $stmt->rowCount();
         }// end if there is an ID or Array
         // $this->getSQL = "<b>Attention:</b> This Query will update all rows in the table, luckily it didn't execute yet!, use exec() method to execute the following query :<br>". $this->sql;
@@ -293,7 +298,7 @@ class DB_Query_Build
         $this->getSQL = $this->sql;
         $stmt = $this->dbh->prepare($this->sql);
         $stmt->execute($this->bindValues);
-        if (!empty($stmt->errorInfo())){
+        if ((isset($stmt->errorInfo()[0]) || isset($stmt->errorInfo()[1])) && !empty(isset($stmt->errorInfo()[1]))){
             return $stmt->errorInfo();
         }
 
@@ -649,7 +654,7 @@ class DB_Query_Build
         $this->rowCount = $stmt->rowCount();
 
 
-        $rows = $stmt->fetchAll(\PDO::FETCH_CLASS, 'MareiObj');
+        $rows = $stmt->fetchAll(\PDO::FETCH_CLASS, MareiObj::class);
         $collection = [];
         $collection = new MareiCollection;
         $x = 0;

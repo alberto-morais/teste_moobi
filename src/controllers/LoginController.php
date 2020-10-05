@@ -13,7 +13,7 @@ class LoginController extends Application
         $login = new Login();
         $resp = $login->check();
         if ($login->check()){
-            $this->session['usuario'] = $resp;
+            $this->session['usuario'] = (object)get_object_vars ( $resp );
             $this->flash(['alert' => [
                     'message'=>'Login realisado com sucesso!'
                     ,'type' => 'success'

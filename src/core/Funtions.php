@@ -19,5 +19,6 @@ function getURI():string
     $base = explode('/', $base);
     $base[] = '//';
     $URI = str_replace($base,'', $URI);
+
     return !empty($URI) ? $URI : '/';
 }
