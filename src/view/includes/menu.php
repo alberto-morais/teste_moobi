@@ -38,7 +38,13 @@
                     <li class="nav-item">
                         <a class="nav-link" href="<?= base_url('usuarios') ?>">
                             <i class="ni ni-circle-08 text-orange"></i>
-                            <span class="nav-link-text">Usuarios</span>
+                            <span class="nav-link-text">Usuários</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= base_url('produto/campos') ?>">
+                            <i class="ni ni-settings text-orange"></i>
+                            <span class="nav-link-text">Configuração</span>
                         </a>
                     </li>
                 </ul>

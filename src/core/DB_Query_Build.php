@@ -10,7 +10,7 @@ class DB_Query_Build
     public $error;
     private $dbh = null, $table, $columns, $sql, $bindValues, $getSQL,
         $where, $orWhere, $whereCount = 0, $isOrWhere = false,
-        $rowCount = 0, $limit, $orderBy, $lastIDInserted = 0;
+        $rowCount = 0, $limit, $orderBy, $lastIDInserted = 0, $table_page;
 
     // Initial values for pagination array
     private $pagination = ['previousPage' => null, 'currentPage' => 1, 'nextPage' => null, 'lastPage' => null, 'totalRows' => null];
@@ -112,6 +112,13 @@ class DB_Query_Build
         $this->isOrWhere = false;
         $this->rowCount = 0;
         $this->lastIDInserted = 0;
+    }
+
+    public function tablePage($table_page)
+    {
+        $this->resetQuery();
+        $this->table_page = $table_page;
+        return $this;
     }
 
     public function delete($table_name, $id = null)
@@ -319,17 +326,20 @@ class DB_Query_Build
         return $this;
     }
 
-    public function select($columns)
+    public function select($columns,$notQuots = false)
     {
-        $columns = explode(',', $columns);
-        foreach ($columns as $key => $column) {
-            $columns[$key] = trim($column);
+        if ($notQuots){
+            $this->columns = $columns;
+        }else{
+            $columns = explode(',', $columns);
+            foreach ($columns as $key => $column) {
+                $columns[$key] = trim($column);
+            }
+
+            $columns = implode('`, `', $columns);
+            $this->columns = "`{$columns}`";
         }
 
-        $columns = implode('`, `', $columns);
-
-
-        $this->columns = "`{$columns}`";
         return $this;
     }
 
@@ -530,7 +540,7 @@ class DB_Query_Build
         $this->rowCount = $stmt->rowCount();
         $rows = $stmt->fetchAll(\PDO::FETCH_CLASS, MareiObj::class);
         $collection = [];
-        $collection = new MareiCollection;
+        $collection = new MareiCollection();
         $x = 0;
         foreach ($rows as $key => $row) {
             $collection->offsetSet($x++, $row);
@@ -561,7 +571,11 @@ class DB_Query_Build
             $select = "*";
         }
 
-        $this->sql = "SELECT $select FROM `$this->table`";
+        if ($this->table == ''){
+            $this->sql = "SELECT $select";
+        }else{
+            $this->sql = "SELECT $select FROM `$this->table`";
+        }
 
         if ($this->where !== null) {
             $this->sql .= $this->where;
@@ -615,7 +629,11 @@ class DB_Query_Build
     public function paginate($page, $limit)
     {
         // Start assimble Query
-        $countSQL = "SELECT COUNT(*) FROM `$this->table`";
+        if($this->table_page){
+            $countSQL = "SELECT COUNT(*) FROM    `$this->table_page`";
+        }else{
+            $countSQL = "SELECT COUNT(*) FROM `$this->table`";
+        }
         if ($this->where !== null) {
             $countSQL .= $this->where;
         }

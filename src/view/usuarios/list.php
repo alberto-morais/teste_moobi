@@ -8,17 +8,7 @@
 <?php require_once(__DIR__ . '/../includes/menu.php'); ?>
 <!-- Main content -->
 <div class="main-content" id="panel">
-    <?php if (isset($this->session['flash']['notify']) && !empty($this->session['flash'])): ?>
-        <?php foreach ($this->session['flash']['notify'] as $alert): ?>
-            <div class="alert alert-<?= $alert['type'] ?> alert-dismissible fade show" role="alert">
-                <span class="alert-icon"><i class="ni ni-like-2"></i></span>
-                <span class="alert-text"><?= $alert['title'] ?></span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        <?php endforeach; ?>
-    <?php endif; ?>
+    <?php require_once(__DIR__.'/../includes/alert_notify.php') ;?>
     <!-- Topnav -->
     <?php require_once(__DIR__ . '/../includes/nav_bar_user.php'); ?>
     <!-- Header -->
@@ -76,7 +66,7 @@
                                         <td>
                                           <span class="badge badge-dot mr-4">
                                             <i class="bg-warning"></i>
-                                            <span class="status"><?= ($usuario->ativo == true) ? 'Ativo' : 'Desativado'; ?></span>
+                                            <span class="status"><?= ($usuario->ativo == 1) ? 'Ativo' : 'Desativado'; ?></span>
                                           </span>
                                         </td>
                                         <td class="text-right">
@@ -92,7 +82,7 @@
                                                         <?php continue; endif; ?>
                                                     <a class="dropdown-item"
                                                        href="<?= base_url("usuario/editar/{$usuario->id}") ?>">Editar</a>
-                                                    <?php if ($usuario->ativo): ?>
+                                                    <?php if (!$usuario->ativo): ?>
                                                         <a class="dropdown-item"
                                                            href="<?= base_url("usuario/active/{$usuario->id}") ?>">Atiavar</a>
                                                     <?php else : ?>

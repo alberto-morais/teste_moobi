@@ -2,6 +2,7 @@
 
 namespace App\controllers;
 
+use App\models\Produto;
 use App\models\Usuario;
 
 class UsuariosController extends Controller
@@ -49,18 +50,43 @@ class UsuariosController extends Controller
                 $this->msg->notifySuccess('Usuário atualizado com sucesso!');
             }
         }else{
-            $this->msg->notifyErrror($usuario::getError()[2]);
+            $this->msg->notifyError($usuario::getError()[2]);
         }
         $this->saveSessionMessage();
         redirect('usuarios');
     }
 
-    public function active()
+    public function active($id): void
     {
+        $usuario = new Usuario();
+        $usuario->findOne($id);
+        $usuario->ativo = 1;
+        $data = get_object_vars($usuario);
+        if ($usuario->save($data)) {
+            $this->msg->notifySuccess('Usuario desativado com sucesso!');
+        } else {
+            $this->msg->notifyError($usuario::getError()[2]);
+        }
+
+        $this->saveSessionMessage();
+        redirect('usuarios');
     }
 
-    public function desactive()
+    public function desactive($id): void
     {
+        $usuario = new Usuario();
+        $usuario->findOne($id);
+        $usuario->ativo = 0;
+        $data = get_object_vars($usuario);
+        if ($usuario->save($data)) {
+            $this->msg->notifyWarning('Usuario desativado com sucesso!');
+        } else {
+            $this->msg->notifyError($usuario::getError()[2]);
+        }
+
+        $this->saveSessionMessage();
+        redirect('usuarios');
     }
+
 
 }

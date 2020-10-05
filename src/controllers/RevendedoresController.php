@@ -2,6 +2,7 @@
 
 namespace App\controllers;
 
+use App\models\Produto;
 use App\models\Revendedor;
 
 class RevendedoresController extends Controller
@@ -42,35 +43,48 @@ class RevendedoresController extends Controller
         $revendedor = new Revendedor();
         if($revendedor->save($data)){
             if($revendedor::getMethodSave() == 'insert'){
-                $this->flash(['alert' => [
-                    'message'=>'Revendedor cadatrado com sucesso!',
-                    'type' => 'success'
-                ]
-                ]);
+                $this->msg->notifySuccess('Revendedor cadatrado com sucesso!');
             }else{
-                $this->flash(['alert' => [
-                    'message'=>'Revendedor atualizado com sucesso!',
-                    'type' => 'success'
-                ]
-                ]);
+                $this->msg->notifySuccess('Revendedor atualizado com sucesso!');
             }
         }else{
-            $this->flash(['alert' => [
-                'message'=> $revendedor::getError()[2]
-                ,'type' => 'danger'
-            ]
-            ]);
+            $this->msg->notifyError($revendedor::getError()[2]);
         }
 
+        $this->saveSessionMessage();
         redirect('revendedores');
     }
 
-    public function active():void
+    public function active($id): void
     {
+        $revendedor = new Revendedor();
+        $revendedor->findOne($id);
+        $revendedor->ativo = 1;
+        $data = get_object_vars($revendedor);
+        if ($revendedor->save($data)) {
+            $this->msg->notifySuccess('Revendedor ativado com sucesso!');
+        } else {
+            $this->msg->notifyError($revendedor::getError()[2]);
+        }
+        $this->saveSessionMessage();
+        redirect('revendedores');
     }
 
-    public function desactive():void
+    public function desactive($id): void
     {
+        $revendedor = new Revendedor();
+        $revendedor->findOne($id);
+        $revendedor->ativo = 0;
+        $data = get_object_vars($revendedor);
+        if ($revendedor->save($data)) {
+            $this->msg->notifyWarning('Revendedor desativado com sucesso!');
+        } else {
+            $this->msg->notifyError($revendedor::getError()[2]);
+        }
+
+        $this->saveSessionMessage();
+        redirect('revendedores');
     }
+
 
 }

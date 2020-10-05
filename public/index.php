@@ -38,11 +38,11 @@ foreach ($routes as $route) {
     $data = [];
     foreach ($keys as $key) {
         $data[$key[1]] = $routeDiff[0] ?? null;
-        $route['name'] = str_replace("{{$key[1]}}",'', $route['name']);
+        $route['name'] = str_replace("{{$key[1]}}", '', $route['name']);
     }
-
     if (($route['name'] == $uri and $route['method'] == $httpMethod) ||
-        (isset($key[1]) && isset($data[$key[1]]) && $route['name'] .  $data[$key[1]] == $uri and $route['method'] == $httpMethod)) {
+        (isset($key[1]) && isset($data[$key[1]]) && $route['name'] . $data[$key[1]] == $uri and $route['method'] == $httpMethod and
+            sizeof(explode('/', $route['name'])) == sizeof(explode('/', $uri)))) {
         $controller = new $route['controller'];
         if (isset($keys[0]) && !empty($data[$key[1]])) {
             $controller->{$route['action']}($data[$key[1]]);

@@ -12,20 +12,24 @@ class Model
 
     static protected $error;
 
-    private $paginate;
+    protected $paginate;
 
     protected $table;
 
     public function __construct()
     {
-        $this->db =  DB_Query_Build::getInstance();
+        $this->db = DB_Query_Build::getInstance();
     }
 
-    public function all($page,$limit)
+    public function all($page = false, $limit = false)
     {
-       $resp = $this->db->table($this->table)->paginate($page, $limit);
-       $this->paginate = $this->db->paginationInfo();
-       return $resp;
+        if ($page == false) {
+            return $this->db->table($this->table)->get();
+        }
+
+        $resp = $this->db->table($this->table)->paginate($page, $limit);
+        $this->paginate = $this->db->paginationInfo();
+        return $resp;
     }
 
     public function getPaginate()
@@ -33,12 +37,12 @@ class Model
         return $this->paginate;
     }
 
-    public function  paginationInfo()
+    public function paginationInfo()
     {
         $this->db->paginationInfo();
     }
 
-    public function findOne($id = '', $where = null, $order = array(), $limit = '', $offset = null)
+    public function findOne($id = '', $where = null, $order = array())
     {
         if (is_numeric($id)) {
             $where = $id;
@@ -49,19 +53,12 @@ class Model
                 $this->db->order_by($key, $item);
             }
         }
-        $db = $this->db->table($this->table)->where($where);
-        if(!empty($limit)){
-            $db->limit($limit, $offset);
 
-        }
-        $result = $db->get()->first();
-        if ($result instanceof Exception) {
+        $result = $this->db->table($this->table)->where($id)->get()->first();
+
+        if (!$result) {
             self::$error = $result;
-
-        } elseif ($result == null) {
-            return false;
-
-        } else {
+        }else {
             $this->set((array)$result);
             return $this;
         }
@@ -91,7 +88,7 @@ class Model
     {
         self::setMethodSave('insert');
         $lastID = $this->db->insert($this->table, $data);
-        if(!is_array($lastID)){
+        if (!is_array($lastID)) {
             return $this->findOne($lastID);
         }
 
@@ -109,12 +106,11 @@ class Model
     }
 
 
-
     protected function update($data)
     {
         self::setMethodSave('update');
         $where = $data['id'];
-        if($this->db->update($this->table, $data, $where)){
+        if ($this->db->update($this->table, $data, $where)) {
             return $this->findOne($data['id']);
         }
         return false;
@@ -139,7 +135,7 @@ class Model
     protected function save($data = false)
     {
         $data = $this->clear($data);
-        if($data != false) $data = (array)$data;
+        if ($data != false) $data = (array)$data;
         if (isset($data['id']) and (!empty($data['id'])) and (!$data == false)) {
             return self::update($data);
         } else {
@@ -150,7 +146,7 @@ class Model
 
     private function clear($data)
     {
-        unset($data['db'], $data['table']);
+        unset($data['db'], $data['table'], $data['paginate']);
         return $data;
     }
 

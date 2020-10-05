@@ -76,7 +76,7 @@
                                         <td>
                                           <span class="badge badge-dot mr-4">
                                             <i class="bg-warning"></i>
-                                            <span class="status"><?= ($revendedor->ativo == true) ? 'Ativo' : 'Desativado'; ?></span>
+                                            <span class="status"><?= ($revendedor->ativo == 1) ? 'Ativo' : 'Desativado'; ?></span>
                                           </span>
                                         </td>
                                         <td class="text-right">
@@ -88,7 +88,7 @@
                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                                                     <a class="dropdown-item"
                                                        href="<?= base_url("revendedor/editar/{$revendedor->id}") ?>">Editar</a>
-                                                    <?php if ($revendedor->ativo): ?>
+                                                    <?php if (!$revendedor->ativo): ?>
                                                         <a class="dropdown-item"
                                                            href="<?= base_url("revendedor/active/{$revendedor->id}") ?>">Atiavar</a>
                                                     <?php else : ?>

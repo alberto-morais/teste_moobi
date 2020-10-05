@@ -74,6 +74,18 @@ return [
         'controller' => UsuariosController::class,
         'action' => 'save'
     ],
+    [
+        'name' => 'usuario/active/{id}',
+        'method' => 'GET',
+        'controller' => UsuariosController::class,
+        'action' => 'active'
+    ],
+    [
+        'name' => 'usuario/desactive/{id}',
+        'method' => 'GET',
+        'controller' => UsuariosController::class,
+        'action' => 'desactive'
+    ],
 
 /////////////////////////    Revendedor  //////////////////////////////
 
@@ -108,6 +120,19 @@ return [
         'controller' => RevendedoresController::class,
         'action' => 'edit'
     ],
+    [
+        'name' => 'revendedor/active/{id}',
+        'method' => 'GET',
+        'controller' => RevendedoresController::class,
+        'action' => 'active'
+    ],
+    [
+        'name' => 'revendedor/desactive/{id}',
+        'method' => 'GET',
+        'controller' => RevendedoresController::class,
+        'action' => 'desactive'
+    ],
+
 
 //////////////////////// Pedidos / //////////////////////////////
 
@@ -137,11 +162,31 @@ return [
     ],
 
     [
+        'name' => 'pedido/visualizar/{id}',
+        'method' => 'GET',
+        'controller' => PedidosController::class,
+        'action' => 'show'
+    ],
+
+    [
         'name' => 'pedido/salvar',
         'method' => 'POST',
         'controller' => PedidosController::class,
         'action' => 'save'
     ],
+    [
+        'name' => 'pedido/active/{id}',
+        'method' => 'GET',
+        'controller' => PedidosController::class,
+        'action' => 'active'
+    ],
+    [
+        'name' => 'pedido/desactive/{id}',
+        'method' => 'GET',
+        'controller' => PedidosController::class,
+        'action' => 'desactive'
+    ],
+
 
     //////////////////////// Produtos ///////////////////////////////
 
@@ -170,11 +215,32 @@ return [
         'action' => 'save'
     ],
     [
+        'name' => 'produto/campos',
+        'method' => 'GET',
+        'controller' => ProdutosController::class,
+        'action' => 'custom'
+    ],
+    [
         'name' => 'produto/editar/{id}',
         'method' => 'GET',
         'controller' => ProdutosController::class,
         'action' => 'edit'
     ],
+    [
+        'name' => 'produto/active/{id}',
+        'method' => 'GET',
+        'controller' => ProdutosController::class,
+        'action' => 'active'
+    ],
+    [
+        'name' => 'produto/desactive/{id}',
+        'method' => 'GET',
+        'controller' => ProdutosController::class,
+        'action' => 'desactive'
+    ],
+
+//////////////////////// ERRO //////////////////////////////
+
     [
         'name' => 'error',
         'method' => 'GET',

@@ -19,16 +19,22 @@ class PeditosProdutos extends Model
     {
         $prduto = new Produto();
 
-        foreach ($data as $item){
-            $prduto->decrementar($item['qtd'],$item['id']);
+        foreach ($data as $item) {
+            $prduto->decrementar($item['qtd'], $item['id']);
             $dataPedidoProduto[] = [
                 'quantidade' => $item['qtd'],
                 'id_produto' => $item['id'],
                 'id_pedido' => $id
             ];
 
-            return $dataPedidoProduto;
         }
+        return $dataPedidoProduto;
     }
 
+    public function listItens(int $id)
+    {
+        return $this->db->query("select p.nome,p.preco,p.descricao, pd.quantidade as quantidade   from pedidos_produtos pd
+                                inner join produtos p on pd.ativo = p.ativo
+                                where pd.id_pedido = $id");
+    }
 }

@@ -8,11 +8,11 @@ class Message
 	private $message;
 	public $notification;
 
-	public function notifyErrror($error)
+	public function notifyError($error)
 	{
 		$this->notification['notify'][] = [
 			'type' => "error",
-			'title' => "<span class='fa fa-times'></span>  $error",
+			'title' => $error,
 		];
 		return $this;
 	}
@@ -21,20 +21,19 @@ class Message
 	{
 		$this->notification['notify'][] = [
 			'type' => "success",
-			'title' => "<span class='fa fa-times'></span>  $text",
+			'title' => $text,
 		];
 		return $this;
 	}
 
-	public function notifyUpdate($text)
+	public function notifyWarning($text)
 	{
 		$this->notification['notify'][] = [
-			'type' => "info",
-			'title' => "<span class='fa fa-times'></span>  $text",
+			'type' => "warning",
+			'title' => $text,
 		];
 		return $this;
 	}
-
 
 	public function notify($msg,$type)
 	{
