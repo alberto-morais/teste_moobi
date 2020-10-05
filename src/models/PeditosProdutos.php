@@ -36,6 +36,8 @@ class PeditosProdutos extends Model
         return $this->db->query("select p.nome,p.preco,p.descricao, pd.quantidade as quantidade from
                                 pedidos_produtos pd
                                 inner join produtos p on pd.id_produto = p.id
-                                where pd.id_pedido = $id");
+                                where pd.id_pedido = $id"
+        );
+
     }
 }

@@ -28,12 +28,15 @@ class Pedido extends Model
         if ($page == false) {
             return $this->db->table($this->table)->get();
         }
-
+        $validUser = '';
+        if ($_SESSION['usuario']->revend){
+            $validUser = " where pedidos.id_revendedor = {$_SESSION['usuario']->id}";
+        }
         $resp = $this->db->tablePage('pedidos')->select("pedidos.id,pedidos.status, pedidos.data,pedidos.valor_venda,pedidos.parcelas, r.revendedor,
                     u.nome, tp.nome from pedidos
                     left join revendedores r on pedidos.id_revendedor = r.id
                     inner join tp_pagamentos tp on pedidos.id_tp_pagamento = tp.id
-                    left join usuarios u on pedidos.id_usuario = u.id", true)->paginate($page,$limit);
+                    left join usuarios u on pedidos.id_usuario = u.id $validUser", true)->paginate($page,$limit);
         $this->paginate = $this->db->paginationInfo();
         return $resp;
     }
