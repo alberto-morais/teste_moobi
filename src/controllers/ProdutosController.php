@@ -3,6 +3,7 @@
 namespace App\controllers;
 
 use App\controllers\Controller;
+use App\models\Campo;
 use App\models\Produto;
 
 class ProdutosController extends Controller
@@ -19,19 +20,23 @@ class ProdutosController extends Controller
 
     public function create(): void
     {
-        $this->view->view('produtos/create');
+        $campos = new Campo();
+        $data['campos'] = $campos->all();
+        $this->view->view('produtos/create', $data);
     }
 
     public function custom()
     {
-        $this->view->view('produtos/create');
+        $this->view->view('produtos/custom');
     }
 
     public function edit(int $id): void
     {
         $produtos = new Produto();
+        $campos = new Campo();
         $produtos->findOne($id);
         $data['produto'] = $produtos;
+        $data['campos'] = $campos->all();
         $this->view->view('produtos/edit', $data);
     }
 

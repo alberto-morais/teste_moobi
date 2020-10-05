@@ -23,26 +23,30 @@
                             <span class="nav-link-text">Pedidos</span>
                         </a>
                     </li>
+                    <?php if (!isset($this->session['usuario']->revend)):?>
                     <li class="nav-item">
                         <a class="nav-link" href="<?= base_url('revendedores') ?>">
                             <i class="ni ni-single-02 text-orange"></i>
                             <span class="nav-link-text">Revendedores</span>
                         </a>
                     </li>
+                    <?php endif; ?>
                     <li class="nav-item">
                         <a class="nav-link" href="<?= base_url('produtos') ?>">
                             <i class="ni ni-app text-orange"></i>
                             <span class="nav-link-text">Produtos</span>
                         </a>
                     </li>
+                    <?php if (!isset($this->session['usuario']->revend)):?>
                     <li class="nav-item">
                         <a class="nav-link" href="<?= base_url('usuarios') ?>">
                             <i class="ni ni-circle-08 text-orange"></i>
                             <span class="nav-link-text">Usuários</span>
                         </a>
                     </li>
+                    <?php endif; ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= base_url('produto/campos') ?>">
+                        <a class="nav-link" href="<?= base_url('campos') ?>">
                             <i class="ni ni-settings text-orange"></i>
                             <span class="nav-link-text">Configuração</span>
                         </a>

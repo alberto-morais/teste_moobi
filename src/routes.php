@@ -1,5 +1,6 @@
 <?php
 
+use App\controllers\CamposPersonalizadosController;
 use App\controllers\ErrorController;
 use App\controllers\EstoqueController;
 use App\controllers\HomeController;
@@ -34,6 +35,12 @@ return [
         'method' => 'POST',
         'controller' => LoginController::class,
         'action' => 'check'
+    ],
+    [
+        'name' => 'login/revenderdor-check',
+        'method' => 'POST',
+        'controller' => LoginController::class,
+        'action' => 'revendedorCheck'
     ],
 
 //////////////////////////   Usuarios   /////////////////////////////////
@@ -215,12 +222,6 @@ return [
         'action' => 'save'
     ],
     [
-        'name' => 'produto/campos',
-        'method' => 'GET',
-        'controller' => ProdutosController::class,
-        'action' => 'custom'
-    ],
-    [
         'name' => 'produto/editar/{id}',
         'method' => 'GET',
         'controller' => ProdutosController::class,
@@ -238,6 +239,58 @@ return [
         'controller' => ProdutosController::class,
         'action' => 'desactive'
     ],
+
+/////////////////// Campos Personalizados ///////////////////
+
+    [
+        'name' => 'campos',
+        'method' => 'GET',
+        'controller' => CamposPersonalizadosController::class,
+        'action' => 'index'
+    ],
+    [
+        'name' => 'campo/novo',
+        'method' => 'GET',
+        'controller' => CamposPersonalizadosController::class,
+        'action' => 'create'
+    ],
+    [
+        'name' => 'campo/salvar',
+        'method' => 'POST',
+        'controller' => CamposPersonalizadosController::class,
+        'action' => 'save'
+    ],
+    [
+        'name' => 'campo/editar/{id}',
+        'method' => 'GET',
+        'controller' => CamposPersonalizadosController::class,
+        'action' => 'edit'
+    ],
+    [
+        'name' => 'campo/{id}',
+        'method' => 'GET',
+        'controller' => CamposPersonalizadosController::class,
+        'action' => 'index'
+    ],
+    [
+        'name' => 'campo/active/{id}',
+        'method' => 'GET',
+        'controller' => CamposPersonalizadosController::class,
+        'action' => 'active'
+    ],
+    [
+        'name' => 'campo/desactive/{id}',
+        'method' => 'GET',
+        'controller' => CamposPersonalizadosController::class,
+        'action' => 'desactive'
+    ],
+    [
+        'name' => 'campo/delete/{id}',
+        'method' => 'GET',
+        'controller' => CamposPersonalizadosController::class,
+        'action' => 'delete'
+    ],
+
 
 //////////////////////// ERRO //////////////////////////////
 

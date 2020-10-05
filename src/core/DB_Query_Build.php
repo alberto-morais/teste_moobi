@@ -3,7 +3,6 @@
 namespace App\core;
 
 
-
 class DB_Query_Build
 {
     private static $instance = null;
@@ -21,7 +20,7 @@ class DB_Query_Build
             //current development environment
             "env" => "development",
             //Localhost
-            "development" => require_once( __DIR__.'/../../config/db.php'),
+            "development" => require_once(__DIR__ . '/../../config/db.php'),
         ];
 
         if ($db_config['env'] == "development") {
@@ -81,7 +80,9 @@ class DB_Query_Build
             } else {
                 $this->getSQL = $query;
                 $stmt = $this->dbh->prepare($query);
-                $stmt->execute($this->bindValues);
+                if ($stmt->execute($this->bindValues) === true and $stmt->rowCount() === 0){
+                    return true;
+                }
                 return $stmt->rowCount();
             }
         }
@@ -274,7 +275,7 @@ class DB_Query_Build
             $stmt = $this->dbh->prepare($this->sql);
             $stmt->execute($this->bindValues);
 
-            if (!empty($stmt->errorInfo())){
+            if (!empty($stmt->errorInfo())) {
                 return $stmt->errorInfo();
             }
 
@@ -305,7 +306,7 @@ class DB_Query_Build
         $this->getSQL = $this->sql;
         $stmt = $this->dbh->prepare($this->sql);
         $stmt->execute($this->bindValues);
-        if ((isset($stmt->errorInfo()[0]) || isset($stmt->errorInfo()[1])) && !empty(isset($stmt->errorInfo()[1]))){
+        if ((isset($stmt->errorInfo()[0]) || isset($stmt->errorInfo()[1])) && !empty(isset($stmt->errorInfo()[1]))) {
             return $stmt->errorInfo();
         }
 
@@ -326,11 +327,11 @@ class DB_Query_Build
         return $this;
     }
 
-    public function select($columns,$notQuots = false)
+    public function select($columns, $notQuots = false)
     {
-        if ($notQuots){
+        if ($notQuots) {
             $this->columns = $columns;
-        }else{
+        } else {
             $columns = explode(',', $columns);
             foreach ($columns as $key => $column) {
                 $columns[$key] = trim($column);
@@ -571,9 +572,9 @@ class DB_Query_Build
             $select = "*";
         }
 
-        if ($this->table == ''){
+        if ($this->table == '') {
             $this->sql = "SELECT $select";
-        }else{
+        } else {
             $this->sql = "SELECT $select FROM `$this->table`";
         }
 
@@ -629,9 +630,9 @@ class DB_Query_Build
     public function paginate($page, $limit)
     {
         // Start assimble Query
-        if($this->table_page){
+        if ($this->table_page) {
             $countSQL = "SELECT COUNT(*) FROM    `$this->table_page`";
-        }else{
+        } else {
             $countSQL = "SELECT COUNT(*) FROM `$this->table`";
         }
         if ($this->where !== null) {

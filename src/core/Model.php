@@ -116,6 +116,12 @@ class Model
         return false;
     }
 
+    protected function delete($id)
+    {
+        return $this->db->delete($this->table,$id);
+
+    }
+
     /**
      * @return mixed
      */
@@ -148,6 +154,14 @@ class Model
     {
         unset($data['db'], $data['table'], $data['paginate']);
         return $data;
+    }
+
+    public function __call($method, $args)
+    {
+        if (!method_exists($this, $method)) {
+            throw new Exception("Method doesn't exist");
+        }
+        call_user_func_array([$this, $method], $args);
     }
 
 }

@@ -11,7 +11,7 @@ class Message
 	public function notifyError($error)
 	{
 		$this->notification['notify'][] = [
-			'type' => "error",
+			'type' => "danger",
 			'title' => $error,
 		];
 		return $this;

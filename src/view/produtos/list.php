@@ -96,9 +96,6 @@
                                                     <a class="dropdown-item"
                                                        href="<?= base_url("produto/desactive/{$produto->id}") ?>">Desativar</a>
                                                     <?php endif;?>
-                                                    <a class="dropdown-item"
-                                                       href="<?= base_url("produto/delete/{$produto->id}") ?>">Remover
-                                                    </a>
                                                 </div>
                                             </div>
                                         </td>

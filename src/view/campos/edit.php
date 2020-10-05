@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 
-<?php require_once(__DIR__ . '/../includes/head.php'); ?>
+<?php require_once(__DIR__.'/../includes/head.php') ;?>
 
 <body>
 <!-- Sidenav -->
-<?php require_once(__DIR__ . '/../includes/menu.php'); ?>
+<?php require_once(__DIR__.'/../includes/menu.php') ;?>
 <!-- Main content -->
 <div class="main-content" id="panel">
     <?php if (isset($this->session['flash']['notify']) && !empty($this->session['flash'])): ?>
@@ -33,25 +33,25 @@
             <?php endforeach; ?>
         <?php endif; ?>
         <!-- Topnav -->
-        <?php require_once(__DIR__ . '/../includes/nav_bar_user.php'); ?>
+        <?php require_once(__DIR__.'/../includes/nav_bar_user.php') ;?>
         <!-- Header -->
         <div class="header bg-primary pb-6">
             <div class="container-fluid">
                 <div class="header-body">
                     <div class="row align-items-center py-4">
                         <div class="col-lg-6 col-7">
-                            <h6 class="h2 text-white d-inline-block mb-0">Produtos</h6>
+                            <h6 class="h2 text-white d-inline-block mb-0">Campos</h6>
                             <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                                     <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
                                     <li class="breadcrumb-item"><a href="<?= base_url() ?>">Dashboards</a></li>
-                                    <li class="breadcrumb-item"><a href="<?= base_url('produtos') ?>">Produtos</a></li>
+                                    <li class="breadcrumb-item"><a href="<?= base_url('campos')?>">Campos</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Cadastro</li>
                                 </ol>
                             </nav>
                         </div>
                         <div class="col-lg-6 col-5 text-right">
-                            <a href="<?= base_url('produtos') ?>" class="btn btn-sm btn-neutral">Voltar</a>
+                            <a href="<?= base_url('campos') ?>" class="btn btn-sm btn-neutral">Voltar</a>
                         </div>
                     </div>
                 </div>
@@ -66,70 +66,38 @@
                         <div class="card-header">
                             <div class="row align-items-center">
                                 <div class="col-8">
-                                    <h3 class="mb-0">Cadastrar Produto </h3>
+                                    <h3 class="mb-0">Cadastrar Campos </h3>
                                 </div>
                             </div>
                         </div>
                         <div class="card-body">
-                            <form action="<?= base_url('produto/salvar') ?>" method="POST">
-                                <h6 class="heading-small text-muted mb-4">Informações do Produtos</h6>
-                                <div class="pl-lg-4">
-                                    <div class="row">
-                                        <div class="col-lg-4">
-                                            <div class="form-group">
-                                                <label class="form-control-label" for="input-username">Nome do
-                                                    Produto</label>
-                                                <input type="text" id="input-nome" class="form-control" name="nome"
-                                                       placeholder="Carro com controler remoto"
-                                                       value="<?= old('nome') ?>">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div class="form-group">
-                                                <label class="form-control-label" for="input-email">Preço</label>
-                                                <input type="text" id="input-preço" name="preco"
-                                                       class="form-control money"
-                                                       placeholder="R$ 10,00" value="<?= old('preco') ?>">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div class="form-group">
-                                                <label class="form-control-label" for="input-email">Quantidade</label>
-                                                <input type="number" id="input-preço" name="quantidade"
-                                                       class="form-control"
-                                                       placeholder="10" value="<?= old('quantidade') ?>">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr class="my-4"/>
-                                <!-- Address -->
+                            <form action="<?=base_url('campo/salvar')?>" method="POST">
+                                <input type="hidden" name="id" value="<?= $campo->id ?>">
                                 <h6 class="heading-small text-muted mb-4">Campos Personalizados</h6>
                                 <div class="pl-lg-4">
                                     <div class="row">
-                                        <?php foreach ($campos as $campo): ?>
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label class="form-control-label"
-                                                           for="input-username"><?= $campo->nome ?></label>
-                                                    <input type="<?= $campo->type ?>" id="input-nome" class="form-control"
-                                                           name="<?= $campo->nome_coluna ?>"
-                                                           placeholder="Carro com controler remoto"
-                                                           value="<?= old($campo->nome_coluna) ?>">
-                                                </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-control-label" for="input-username">Nome do
+                                                    Campos</label>
+                                                <input type="text" id="input-nome" class="form-control" name="nome"
+                                                       placeholder="Carro com controler remoto" value="<?= old('nome') ?? $campo->nome ?>">
                                             </div>
-                                        <?php endforeach; ?>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-control-label" for="input-email">Tipo do  campo</label>
+                                                <select name="type" class="form-control" placeholder="Text" >
+                                                    <option <?= (old('type') == 'text' || $campo->type == 'text') ? 'selected' : '' ?> value="text">Texto Pequeno</option>
+                                                    <option <?= (old('type') == 'number' || $campo->type == 'number') ? 'selected' : '' ?> value="number">Número</option>
+                                                    <option <?= (old('type') == 'date' || $campo->type == 'date') ? 'selected' : '' ?> value="date">Data</option>
+                                                    <option <?= (old('type') == 'textarea' || $campo->type == 'textarea') ? 'selected' : '' ?> value="textarea">Texto Grande</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <hr class="my-4"/>
-                                <!-- Description -->
-                                <h6 class="heading-small text-muted mb-4">Descrição</h6>
-                                <div class="pl-lg-4">
-                                    <div class="form-group">
-                                        <textarea rows="4" class="form-control" name="descricao"
-                                                  placeholder="Descrição"></textarea>
-                                    </div>
-                                </div>
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <button class="btn btn-icon btn-primary float-right" type="submit">
@@ -144,10 +112,10 @@
                 </div>
             </div>
             <!-- Footer -->
-            <?php require_once(__DIR__ . '/../includes/footer.php'); ?>
+            <?php require_once(__DIR__.'/../includes/footer.php') ;?>
         </div>
     </div>
-    <?php require_once(__DIR__ . '/../includes/scripts.php'); ?>
+    <?php require_once(__DIR__.'/../includes/scripts.php') ;?>
 </body>
 
 </html>

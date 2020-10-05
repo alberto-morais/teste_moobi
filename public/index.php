@@ -49,7 +49,14 @@ foreach ($routes as $route) {
         } elseif ($route['name'] == $uri) {
             $controller->{$route['action']}();
         }
-        $flag = true;
+
+        if (isset($_SESSION['init']) && $_SESSION['init'] === 0) {
+            unset($_SESSION['flash']);
+        }
+
+        if (isset($_SESSION['init'])) $_SESSION['init'] = 0;
+
+        return;
     }
 }
 
@@ -66,8 +73,3 @@ if (!$flag) {
 }
 
 
-if (isset($_SESSION['init']) && $_SESSION['init'] === 0) {
-    unset($_SESSION['flash']);
-}
-
-if (isset($_SESSION['init'])) $_SESSION['init'] = 0;

@@ -1,4 +1,4 @@
-<?php if (isset($this->session['flash']['notify']) && !empty($this->session['flash'])): ?>
+<?php if (isset($this->session['flash']['notify']) && !empty($this->session['flash']['notify'])): ?>
     <?php foreach ($this->session['flash']['notify'] as $alert): ?>
         <div class="alert alert-<?= $alert['type'] ?> fade show" role="alert">
             <span class="alert-icon"><i class="ni ni-<?= ($alert['type'] == 'success')? 'like-2' : 'settings'?>"></i></span>

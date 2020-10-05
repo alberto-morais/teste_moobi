@@ -76,7 +76,7 @@
                             <h6 class="heading-small text-muted mb-4">Informações do Produtos</h6>
                             <div class="pl-lg-4">
                                 <div class="row">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-3">
                                         <div class="form-group">
                                             <label class="form-control-label" for="input-username">Nome do
                                                 Produto</label>
@@ -84,21 +84,21 @@
                                                    placeholder="Carro com controler remoto" value="<?= $produto->nome ?>">
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-3">
                                         <div class="form-group">
                                             <label class="form-control-label" for="input-email">Preço</label>
                                             <input type="text"  name="preco" class="form-control money"
                                                        placeholder="R$100,00" value="<?= formatCurrency($produto->preco) ?>">
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-3">
                                         <div class="form-group">
                                             <label class="form-control-label" for="input-email">Quantidade Atual</label>
                                             <input type="number" id="input-preço" name="quantidade" class="form-control disabled" readonly
                                                        placeholder="10" value="<?= ($produto->quantidade == '') ?  0 : $produto->quantidade?>">
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-3">
                                         <div class="form-group">
                                             <label class="form-control-label" for="input-email">Adicionar</label>
                                             <input type="number" id="input-preço" name="adicionar" class="form-control"
@@ -110,25 +110,22 @@
                             <hr class="my-4"/>
                             <!-- Address -->
                             <h6 class="heading-small text-muted mb-4">Campos Personalizados</h6>
-<!--                            <div class="pl-lg-4">-->
-<!--                                <div class="row">-->
-<!--                                    <div class="col-lg-6">-->
-<!--                                        <div class="form-group">-->
-<!--                                            <label class="form-control-label" for="input-username">Nome do-->
-<!--                                                Produto</label>-->
-<!--                                            <input type="text" id="input-nome" class="form-control" name="nome"-->
-<!--                                                   placeholder="Carro com controler remoto" value="">-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div class="col-lg-6">-->
-<!--                                        <div class="form-group">-->
-<!--                                            <label class="form-control-label" for="input-email">Preço</label>-->
-<!--                                            <input type="email" id="input-preço" name="preco" class="form-control"-->
-<!--                                                   placeholder="R$ 10,00">-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <?php foreach ($campos as $campo): ?>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-control-label"
+                                                       for="input-username"><?= $campo->nome ?></label>
+                                                <input type="<?=$campo->type?>" id="input-nome" class="form-control"
+                                                       name="<?= $campo->nome_coluna ?>"
+                                                       placeholder="Carro com controler remoto"
+                                                       value="<?= old($campo->nome_coluna) ??  $produto->{$campo->nome_coluna} ?>">
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
                             <hr class="my-4"/>
                             <!-- Description -->
                             <h6 class="heading-small text-muted mb-4">Descrição</h6>

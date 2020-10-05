@@ -71,7 +71,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <form action="<?=base_url('pedido/salvar')?>" method="POST">
+                            <form action="<?= base_url('pedido/salvar') ?>" method="POST">
                                 <div class="pl-lg-4">
                                     <div class="row">
                                         <div class="col-lg-8">
@@ -80,11 +80,17 @@
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <label for="qtd">Revendedor</label>
-                                                        <select name="id_revendedor" required class="form-control" id="">
-                                                            <option value="" selected> Selecione o Revendedor
+                                                        <select name="id_revendedor" required
+                                                                class="<?= (isset($this->session['usuario']->revend)) ? 'disable readonly' : '' ?> form-control"
+                                                                id="">
+                                                            <option disabled value="" selected> Selecione o Revendedor
                                                             </option>
                                                             <?php foreach ($revendedores as $revendedor): ?>
-                                                                <option value="<?= $revendedor->id ?>"> <?= "{$revendedor->revendedor}" ?></option>
+                                                                <?php if (isset($this->session['usuario']->revend) and $this->session['usuario']->id == $revendedor->id):?>
+                                                                    <option <?= ($this->session['usuario']->id == $revendedor->id) ? 'selected' : ''?>
+                                                                             value="<?= $revendedor->id ?>"> <?= "{$revendedor->revendedor}" ?>
+                                                                    </option>
+                                                                <?php endif; ?>
                                                             <?php endforeach; ?>
                                                         </select>
                                                     </div>
@@ -113,7 +119,8 @@
                                                                     <div class="col-lg-8">
                                                                         <div class="form-group">
                                                                             <label for="prod">Produtos</label>
-                                                                            <select required name="id" class="form-control produtos">
+                                                                            <select required name="id"
+                                                                                    class="form-control produtos">
                                                                                 <option value="" selected> Selecione
                                                                                     os Produtos
                                                                                 </option>
@@ -174,7 +181,8 @@
                                                     <label for="prod">Formas de Pagamento</label>
                                                     <select required name="id_tp_pagamento" class="form-control"
                                                             id="forma-pagamento">
-                                                        <option value="" selected> Selecione a Forma de Pagamento</option>
+                                                        <option value="" selected> Selecione a Forma de Pagamento
+                                                        </option>
                                                         <?php foreach ($formaPagamento as $tp_pagamento): ?>
                                                             <option value="<?= $tp_pagamento->id ?>"> <?= $tp_pagamento->nome ?></option>
                                                         <?php endforeach; ?>
@@ -182,15 +190,16 @@
                                                 </div>
                                                 <div class="form-group" style="display: none" id="parcelas">
                                                     <label for="prod">Parcelas</label>
-                                                    <select name="parcelas" class="form-control" >
-                                                            <option value="1"> x1</option>
-                                                            <option value="2"> x2</option>
-                                                            <option value="3"> x3</option>
+                                                    <select name="parcelas" class="form-control">
+                                                        <option value="1"> x1</option>
+                                                        <option value="2"> x2</option>
+                                                        <option value="3"> x3</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="prod">Valor a Pagar</label>
-                                                    <input class="form-control disabled money" name="valor_venda" value="" required readonly>
+                                                    <input class="form-control disabled money" name="valor_venda"
+                                                           value="" required readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -233,13 +242,13 @@
                 isFirstItemUndeletable: true
             })
 
-            function calculo(){
+            function calculo() {
                 var valor_total = 0;
                 $('select.produtos').each(function (index, element) {
                     var valor_pedido = $(element).find('option:selected').data('valor');
-                    var elementQtdVendas =  $(element).closest('[data-repeater-item]').find('.qtd');
+                    var elementQtdVendas = $(element).closest('[data-repeater-item]').find('.qtd');
                     var qtd_venda = ($(elementQtdVendas).val() == '') ? 0 : $(elementQtdVendas).val();
-                    valor_total +=  (parseFloat(valor_pedido) * parseFloat(qtd_venda))
+                    valor_total += (parseFloat(valor_pedido) * parseFloat(qtd_venda))
                 })
                 valor_total = removeMaskMoney(valor_total)
                 $('[name="valor_pedido"]').val(valor_total);
@@ -247,13 +256,12 @@
             }
 
 
-
-            $(document).on('keyup','.qtd',function () {
+            $(document).on('keyup', '.qtd', function () {
                 var pai = $(this).closest('[data-repeater-item]')
                 var select = $(pai).find('select.produtos')
                 var qtd_estoque = $(select).find('option:selected').data('qtd');
                 var qtd_venda = $(this).val()
-                if (qtd_venda > qtd_estoque){
+                if (qtd_venda > qtd_estoque) {
                     alert('Quantidade maior que o estoque!');
                     $(this).val('')
                     calculo()
@@ -265,27 +273,27 @@
             })
 
             $('#forma-pagamento').change(function () {
-                if ($(this).val() == 2){
+                if ($(this).val() == 2) {
                     $('#parcelas select').attr('required', true)
                     $('#parcelas').fadeIn();
                     $('[name="valor_venda"]').val($('[name="valor_pedido"]').val())
-                }else{
+                } else {
                     $('#parcelas select').removeAttr('required')
                     $('#parcelas').fadeOut();
                 }
 
-                if ($(this).val() == 1){
+                if ($(this).val() == 1) {
                     var preco = removeMaskMoney($('[name="valor_pedido"]').val());
                     var porcentagem = 10;
-                    var total = preco * (porcentagem/100);
+                    var total = preco * (porcentagem / 100);
                     $('[name="valor_venda"]').val((preco - total))
                     mask()
                 }
 
-                if ($(this).val() == 3){
+                if ($(this).val() == 3) {
                     var preco = removeMaskMoney($('[name="valor_pedido"]').val());
                     var porcentagem = 5;
-                    var total = preco * (porcentagem/100);
+                    var total = preco * (porcentagem / 100);
                     $('[name="valor_venda"]').val((preco - total))
                     mask()
                 }
