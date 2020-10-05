@@ -7,7 +7,11 @@ use App\models\Revendedor;
 
 class RevendedoresController extends Controller
 {
-
+    public function __construct()
+    {
+        parent::__construct();
+        if(isset($this->session['usuario']->revend)) redirect('/');
+    }
     public function index($page = 1):void
     {
         $revendedor = new Revendedor();

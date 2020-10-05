@@ -66,7 +66,7 @@
                                 </div>
                             </div>
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary my-4">Sign in</button>
+                                <button type="submit" class="btn btn-primary my-4">Logar</button>
                             </div>
                         </form>
                     </div>
@@ -95,7 +95,7 @@
                                 </div>
                             </div>
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary my-4">Sign in</button>
+                                <button type="submit" class="btn btn-primary my-4">Logar</button>
                             </div>
                         </form>
                     </div>

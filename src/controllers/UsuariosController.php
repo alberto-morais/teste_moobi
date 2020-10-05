@@ -8,6 +8,12 @@ use App\models\Usuario;
 class UsuariosController extends Controller
 {
 
+    public function __construct()
+    {
+        parent::__construct();
+        if(isset($this->session['usuario']->revend)) redirect('/');
+    }
+
     public function index($page = 1)
     {
         $limit = 5;
