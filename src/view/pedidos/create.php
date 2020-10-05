@@ -6,32 +6,9 @@
 <body>
 <!-- Sidenav -->
 <?php require_once(__DIR__ . '/../includes/menu.php'); ?>
-<!-- Main content -->
-<div class="main-content" id="panel">
-    <?php if (isset($this->session['flash']['notify']) && !empty($this->session['flash'])): ?>
-        <?php foreach ($this->session['flash']['notify'] as $alert): ?>
-            <div class="alert alert-<?= $alert['type'] ?> alert-dismissible fade show" role="alert">
-                <span class="alert-icon"><i class="ni ni-like-2"></i></span>
-                <span class="alert-text"><?= $alert['title'] ?></span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        <?php endforeach; ?>
-    <?php endif; ?>
     <!-- Main content -->
     <div class="main-content" id="panel">
-        <?php if (isset($this->session['flash']['notify']) && !empty($this->session['flash'])): ?>
-            <?php foreach ($this->session['flash']['notify'] as $alert): ?>
-                <div class="alert alert-<?= $alert['type'] ?> alert-dismissible fade show" role="alert">
-                    <span class="alert-icon"><i class="ni ni-like-2"></i></span>
-                    <span class="alert-text"><?= $alert['title'] ?></span>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
+        <?php require_once(__DIR__.'/../includes/alert_notify.php') ;?>
         <!-- Topnav -->
         <?php require_once(__DIR__ . '/../includes/nav_bar_user.php'); ?>
         <!-- Header -->
@@ -65,22 +42,40 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="row align-items-center">
-                                <div class="col-8">
-                                    <h3 class="mb-0">Cadastrar Pedido</h3>
+                                <div class="col-12">
+                                    <h3 class="mb-0">Cadastrar Pedido
+                                        <?php if (!isset($this->session['usuario']->revend)): ?>
+                                            <div class="float-right">
+                                                <div class="custom-control custom-radio custom-control-inline">
+                                                    <input <?= (!isset($this->session['usuario']->revend)) ? 'checked' : '' ?>
+                                                            type="radio" id="customRadioInline1" value="1" name="user"
+                                                            class="custom-control-input">
+                                                    <label class="custom-control-label"
+                                                           for="customRadioInline1">Usuário</label>
+                                                </div>
+                                                <div class="custom-control custom-radio custom-control-inline">
+                                                    <input type="radio" id="customRadioInline2" name="user"
+                                                            class="custom-control-input">
+                                                    <label class="custom-control-label" for="customRadioInline2">Revendedor</label>
+                                                </div>
+                                            </div>
+                                        <?php endif; ?>
+                                    </h3>
                                 </div>
                             </div>
                         </div>
                         <div class="card-body">
                             <form action="<?= base_url('pedido/salvar') ?>" method="POST">
+                                <input name="id_usuario"  type="hidden" id="usuario" value="<?= $this->session['usuario']->id ?>">
                                 <div class="pl-lg-4">
                                     <div class="row">
                                         <div class="col-lg-8">
                                             <h6 class="heading-small text-muted mb-4">Informações do Pedido</h6>
                                             <div class="row">
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-4" style="display: none" id="revendedor">
                                                     <div class="form-group">
                                                         <label for="qtd">Revendedor</label>
-                                                        <select name="id_revendedor" required
+                                                        <select <?= (!isset($this->session['usuario']->revend)) ? 'disabled' : '' ?> name="id_revendedor" required
                                                                 class="<?= (isset($this->session['usuario']->revend)) ? 'disable readonly' : '' ?> form-control"
                                                                 id="">
                                                             <option disabled value="" selected> Selecione o Revendedor
@@ -99,7 +94,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-3">
+                                                <div class="col-lg-4">
                                                     <div class="form-group">
                                                         <label for="qtd">Date</label>
                                                         <input type="text" name="data" class="form-control date"
@@ -107,7 +102,7 @@
                                                                value="<?= date('d-m-Y h:i:s') ?>">
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-3">
+                                                <div class="col-lg-4">
                                                     <div class="form-group">
                                                         <label for="qtd">Valor do pedido</label>
                                                         <input type="text" name="valor_pedido"
@@ -188,16 +183,23 @@
                                                         <option value="" selected> Selecione a Forma de Pagamento
                                                         </option>
                                                         <?php foreach ($formaPagamento as $tp_pagamento): ?>
-                                                            <option  <?= old('id_tp_pagamento') == $tp_pagamento->id ? 'seleced': ''?> value="<?= $tp_pagamento->id ?>"> <?= $tp_pagamento->nome ?></option>
+                                                            <option <?= old('id_tp_pagamento') == $tp_pagamento->id ? 'seleced' : '' ?>
+                                                                    value="<?= $tp_pagamento->id ?>"> <?= $tp_pagamento->nome ?></option>
                                                         <?php endforeach; ?>
                                                     </select>
                                                 </div>
                                                 <div class="form-group" style="display: none" id="parcelas">
                                                     <label for="prod">Parcelas</label>
                                                     <select name="parcelas" class="form-control">
-                                                        <option <?= old('parcelas') == 1 ? 'seleced': ''?> value="1"> x1</option>
-                                                        <option <?= old('parcelas') == 2 ? 'seleced': ''?> value="2"> x2</option>
-                                                        <option <?= old('parcelas') == 3 ? 'seleced': ''?> value="3"> x3</option>
+                                                        <option <?= old('parcelas') == 1 ? 'seleced' : '' ?> value="1">
+                                                            x1
+                                                        </option>
+                                                        <option <?= old('parcelas') == 2 ? 'seleced' : '' ?> value="2">
+                                                            x2
+                                                        </option>
+                                                        <option <?= old('parcelas') == 3 ? 'seleced' : '' ?> value="3">
+                                                            x3
+                                                        </option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
@@ -232,7 +234,17 @@
         $(function () {
             'use strict';
             // Default
-
+            $('.custom-control.custom-radio.custom-control-inline').click(function () {
+                if($('[name="user"]:checked').val() == 1){
+                    $('#revendedor').fadeOut();
+                    $('#revendedor select').attr('disabled', true);
+                    $('[name="id_usuario"]').attr('disabled', false);
+                }else{
+                    $('#revendedor').fadeIn();
+                    $('#revendedor select').attr('disabled', false);
+                    $('[name="id_usuario"]').attr('disabled', true);
+                }
+            })
 
             $('.repeater-default').repeater({
                 show: function () {

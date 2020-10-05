@@ -8,17 +8,7 @@
 <?php require_once(__DIR__.'/../includes/menu.php') ;?>
 <!-- Main content -->
 <div class="main-content" id="panel">
-    <?php if (isset($this->session['flash']['notify']) && !empty($this->session['flash'])): ?>
-        <?php foreach ($this->session['flash']['notify'] as $alert): ?>
-            <div class="alert alert-<?= $alert['type'] ?> alert-dismissible fade show" role="alert">
-                <span class="alert-icon"><i class="ni ni-like-2"></i></span>
-                <span class="alert-text"><?= $alert['title'] ?></span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        <?php endforeach; ?>
-    <?php endif; ?>
+    <?php require_once(__DIR__.'/../includes/alert_notify.php') ;?>
 <!-- Main content -->
 <div class="main-content" id="panel">
     <?php if (isset($this->session['flash']['notify']) && !empty($this->session['flash'])): ?>
@@ -66,7 +56,24 @@
                     <div class="card-header">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h3 class="mb-0">Cadastrar Produto </h3>
+                                <h3 class="mb-0">Cadastrar Produto
+                                    <?php if (!isset($this->session['usuario']->revend)): ?>
+                                        <div class="float-right">
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input <?= (!isset($this->session['usuario']->revend)) ? 'checked' : '' ?>
+                                                    type="radio" id="customRadioInline1" value="1" name="user"
+                                                    class="custom-control-input">
+                                                <label class="custom-control-label"
+                                                       for="customRadioInline1">Usuário</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" id="customRadioInline2" value="2" name="user"
+                                                       class="custom-control-input">
+                                                <label class="custom-control-label" for="customRadioInline2">Revendedor</label>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                </h3>
                             </div>
                         </div>
                     </div>
